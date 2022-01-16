@@ -8,8 +8,8 @@ import {
   ListItem,
   ListItemText,
 } from "@mui/material";
-import { green, red } from "@mui/material/colors";
-import { capitalize } from "lodash";
+import { green, purple, red, yellow } from "@mui/material/colors";
+import { startCase } from "lodash";
 
 import { CharacterAttributes, StarshipAttributes } from "../../types";
 
@@ -24,15 +24,22 @@ const PlayCard = ({ attributes, imageUrl, type }: PlayCardProps) => {
     .filter(([key]) => key !== "name")
     .map(([key, value]) => (
       <ListItem>
-        <ListItemText>{`${capitalize(key)}: ${value}`}</ListItemText>
+        <ListItemText>{`${startCase(key)}: ${value}`}</ListItemText>
       </ListItem>
     ));
 
   return (
-    <Card sx={{ maxWidth: 350 }}>
+    <Card
+      variant="outlined"
+      sx={{
+        bgcolor: purple[900],
+        color: yellow[100],
+        width: "300px",
+      }}
+    >
       <CardHeader
         title={attributes.name}
-        subheader={capitalize(type)}
+        subheader={startCase(type)}
         avatar={
           <Avatar
             sx={{ bgcolor: type === "character" ? red[600] : green[300] }}
