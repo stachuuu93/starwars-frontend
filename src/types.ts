@@ -1,13 +1,20 @@
-export interface CharacterAttributes {
+interface CommonAttributes {
   name: string;
+  imageUrl: string;
+}
+export interface CharacterAttributes {
   height: number;
   mass: number;
-  gender: "male" | "female";
+  iq: number;
 }
 
 export interface StarshipAttributes {
-  name: string;
   length: number;
   cargoCapacity: number;
   crew: number;
 }
+
+export interface Character extends CommonAttributes, CharacterAttributes {}
+export interface Starship extends CommonAttributes, StarshipAttributes {}
+
+export type Resource = "character" | "starship";

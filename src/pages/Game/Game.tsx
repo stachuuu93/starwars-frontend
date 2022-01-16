@@ -1,26 +1,21 @@
-import React from "react";
-import { gql, useQuery } from "@apollo/client";
-import { Button, CircularProgress, Grid } from "@mui/material";
-
-import PlayCard from "../../components/PlayCard/PlayCard";
+import React, { useState } from "react";
+import {
+  Button,
+  CircularProgress,
+  Grid,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import { purple } from "@mui/material/colors";
 
-const RANDOM_SHIPS = gql`
-  query getRandomShips($limit: Int) {
-    pickRandomStarships(limit: $limit) {
-      name
-      length
-      crew
-      cargoCapacity
-      imageUrl
-    }
-  }
-`;
+import PlayCard from "../../components/PlayCard/PlayCard";
+import useResource from "../../hooks/useResource";
+import { Resource } from "../../types";
 
 const Game = () => {
-  const { error, loading, data, refetch } = useQuery(RANDOM_SHIPS, {
-    fetchPolicy: "no-cache",
-    variables: { limit: 2 },
+  const [resource, setResource] = useState<Resource>("starship");
+  const { data, error, loading, refetch } = useResource(resource, {
+    limit: 2,
   });
 
   if (error) {
@@ -31,10 +26,10 @@ const Game = () => {
     return <CircularProgress />;
   }
 
-  const [leftStarship, rightStarship] = data.pickRandomStarships;
+  const [leftResource, rightResource] = data!.resources;
 
-  const { imageUrl: leftStarshipImage, ...leftStarshipAttrs } = leftStarship;
-  const { imageUrl: rightStarshipImage, ...rightStarshipAttrs } = rightStarship;
+  const { imageUrl: leftResourceImage, ...leftResourceAttrs } = leftResource;
+  const { imageUrl: rightResourceImage, ...rightResourceAttrs } = rightResource;
 
   const playAgain = () => {
     refetch();
@@ -45,8 +40,8 @@ const Game = () => {
       <Grid item xs={5} md={3} lg={2}>
         <PlayCard
           type="starship"
-          attributes={leftStarshipAttrs}
-          imageUrl={leftStarshipImage}
+          attributes={leftResourceAttrs}
+          imageUrl={leftResourceImage}
         />
       </Grid>
       <Grid
@@ -58,6 +53,13 @@ const Game = () => {
         justifyContent="center"
         p={2}
       >
+        <Select
+          value={resource}
+          onChange={(event) => setResource(event.target.value as Resource)}
+        >
+          <MenuItem value="character">Character</MenuItem>
+          <MenuItem value="starship">Starship</MenuItem>
+        </Select>
         <Button variant="contained" onClick={playAgain}>
           Play again
         </Button>
@@ -65,8 +67,8 @@ const Game = () => {
       <Grid item xs={5} md={3} lg={2}>
         <PlayCard
           type="starship"
-          attributes={rightStarshipAttrs}
-          imageUrl={rightStarshipImage}
+          attributes={rightResourceAttrs}
+          imageUrl={rightResourceImage}
         />
       </Grid>
     </Grid>
