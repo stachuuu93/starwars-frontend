@@ -1,4 +1,4 @@
-import { Box, Button, Grid, MenuItem, Select, styled } from "@mui/material";
+import { Button, Grid, MenuItem, Select, styled } from "@mui/material";
 import { purple, yellow } from "@mui/material/colors";
 import { ResourceType } from "../../types";
 
@@ -14,6 +14,8 @@ interface ControlsProps {
 const ScoreContainer = styled("div")({
   color: yellow[400],
   fontSize: "3rem",
+  display: "flex",
+  justifyContent: "center",
 });
 
 const Controls = ({
@@ -27,8 +29,8 @@ const Controls = ({
   return (
     <Grid
       container
-      bgcolor={purple[900]}
-      alignItems="center"
+      bgcolor={purple[800]}
+      alignItems="stretch"
       p={2}
       direction="column"
       rowSpacing={2}
@@ -38,6 +40,7 @@ const Controls = ({
       </Grid>
       <Grid item xs={12}>
         <Select
+          color="secondary"
           value={resourceType}
           onChange={(event) =>
             onSelectResourceType(event.target.value as ResourceType)
@@ -49,12 +52,22 @@ const Controls = ({
         </Select>
       </Grid>
       <Grid item xs={12}>
-        <Button variant="contained" onClick={onPickNewCardsClick}>
+        <Button
+          color="secondary"
+          variant="contained"
+          onClick={onPickNewCardsClick}
+          fullWidth
+        >
           Pick random
         </Button>
       </Grid>
       <Grid item xs={12}>
-        <Button variant="contained" onClick={onBattleClick}>
+        <Button
+          color="secondary"
+          variant="contained"
+          onClick={onBattleClick}
+          fullWidth
+        >
           Battle
         </Button>
       </Grid>

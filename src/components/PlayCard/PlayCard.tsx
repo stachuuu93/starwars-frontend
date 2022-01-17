@@ -8,6 +8,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  styled,
 } from "@mui/material";
 import { green, purple, red, yellow } from "@mui/material/colors";
 import { startCase } from "lodash";
@@ -20,6 +21,12 @@ export interface PlayCardProps {
   side: "left" | "right";
   attributesState: AttributesState;
 }
+
+const StyledCard = styled(Card)({
+  backgroundColor: purple[900],
+  color: yellow[100],
+  width: "300px",
+});
 
 const PlayCard = ({ resource, type, side, attributesState }: PlayCardProps) => {
   const { name, imageUrl, ...attributes } = resource;
@@ -45,15 +52,9 @@ const PlayCard = ({ resource, type, side, attributesState }: PlayCardProps) => {
   );
 
   return (
-    <Card
-      variant="outlined"
-      sx={{
-        bgcolor: purple[900],
-        color: yellow[100],
-        width: "300px",
-      }}
-    >
+    <StyledCard variant="outlined">
       <CardHeader
+        color="primary"
         title={name}
         subheader={startCase(type)}
         avatar={
@@ -74,7 +75,7 @@ const PlayCard = ({ resource, type, side, attributesState }: PlayCardProps) => {
       <CardContent>
         <List dense>{attribiutesList}</List>
       </CardContent>
-    </Card>
+    </StyledCard>
   );
 };
 
