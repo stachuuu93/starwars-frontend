@@ -2,7 +2,7 @@ import { Button, Grid, MenuItem, Select, styled } from "@mui/material";
 import { purple, yellow } from "@mui/material/colors";
 import { ResourceType } from "../../types";
 
-interface ControlsProps {
+export interface ControlsProps {
   leftScore: number;
   rightScore: number;
   resourceType: ResourceType;

@@ -1,10 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import {
-  Character,
-  CharacterAttributes,
-  Starship,
-  StarshipAttributes,
-} from "../../types";
+import { Character, Starship } from "../../types";
 
 import PlayCard, { PlayCardProps } from "./PlayCard";
 
