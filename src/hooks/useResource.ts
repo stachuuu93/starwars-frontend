@@ -1,13 +1,13 @@
 import { gql, useQuery } from "@apollo/client";
 
-import { Character, Resource, Starship } from "../types";
+import { Character, Resource, ResourceType, Starship } from "../types";
 
 interface UseResourceOptions {
   limit: number;
 }
 
 interface ResourceResponse {
-  resources: Character[] | Starship[];
+  resources: Resource[];
 }
 
 const RANDOM_SHIPS = gql`
@@ -28,13 +28,13 @@ const RANDOM_CHARACTERS = gql`
       name
       height
       mass
-      gender
+      iq
       imageUrl
     }
   }
 `;
 
-const useResource = (resource: Resource, options: UseResourceOptions) => {
+const useResource = (resource: ResourceType, options: UseResourceOptions) => {
   const { limit } = options;
 
   return useQuery<ResourceResponse>(

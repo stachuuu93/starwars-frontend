@@ -1,22 +1,34 @@
-import React, { useState } from "react";
 import {
   Button,
   CircularProgress,
   Grid,
   Select,
   MenuItem,
+  Box,
+  SelectChangeEvent,
 } from "@mui/material";
 import { purple } from "@mui/material/colors";
 
 import PlayCard from "../../components/PlayCard/PlayCard";
 import useResource from "../../hooks/useResource";
-import { Resource } from "../../types";
+import useGameState, { GameState } from "../../hooks/useGameState";
+import { ResourceType } from "../../types";
+
+const initialState: GameState = {
+  attributesState: {},
+  leftScore: 0,
+  rightScore: 0,
+  resourceType: "starship",
+};
 
 const Game = () => {
-  const [resource, setResource] = useState<Resource>("starship");
-  const { data, error, loading, refetch } = useResource(resource, {
-    limit: 2,
-  });
+  const [gameState, dispatch] = useGameState(initialState);
+  const { data, error, loading, refetch } = useResource(
+    gameState.resourceType,
+    {
+      limit: 2,
+    }
+  );
 
   if (error) {
     return <p>Error</p>;
@@ -28,20 +40,30 @@ const Game = () => {
 
   const [leftResource, rightResource] = data!.resources;
 
-  const { imageUrl: leftResourceImage, ...leftResourceAttrs } = leftResource;
-  const { imageUrl: rightResourceImage, ...rightResourceAttrs } = rightResource;
-
-  const playAgain = () => {
+  const handlePlayAgainClick = () => {
     refetch();
+    dispatch({ type: "resetAttributes" });
+  };
+
+  const handleBattleClick = () => {
+    dispatch({ type: "battle", leftResource, rightResource });
+  };
+
+  const handleSelectResourceType = (event: SelectChangeEvent) => {
+    dispatch({
+      type: "changeResourceType",
+      resourceType: event.target.value as ResourceType,
+    });
   };
 
   return (
     <Grid container justifyContent="space-around" alignItems="center">
       <Grid item xs={5} md={3} lg={2}>
         <PlayCard
-          type="starship"
-          attributes={leftResourceAttrs}
-          imageUrl={leftResourceImage}
+          type={gameState.resourceType}
+          side="left"
+          resource={leftResource}
+          attributesState={gameState.attributesState}
         />
       </Grid>
       <Grid
@@ -53,22 +75,27 @@ const Game = () => {
         justifyContent="center"
         p={2}
       >
+        <Box display="block">{`${gameState.leftScore} : ${gameState.rightScore}`}</Box>
         <Select
-          value={resource}
-          onChange={(event) => setResource(event.target.value as Resource)}
+          value={gameState.resourceType}
+          onChange={handleSelectResourceType}
         >
           <MenuItem value="character">Character</MenuItem>
           <MenuItem value="starship">Starship</MenuItem>
         </Select>
-        <Button variant="contained" onClick={playAgain}>
-          Play again
+        <Button variant="contained" onClick={handlePlayAgainClick}>
+          Pick random
+        </Button>
+        <Button variant="contained" onClick={handleBattleClick}>
+          Battle
         </Button>
       </Grid>
       <Grid item xs={5} md={3} lg={2}>
         <PlayCard
-          type="starship"
-          attributes={rightResourceAttrs}
-          imageUrl={rightResourceImage}
+          type={gameState.resourceType}
+          side="right"
+          resource={rightResource}
+          attributesState={gameState.attributesState}
         />
       </Grid>
     </Grid>

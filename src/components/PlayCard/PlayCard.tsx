@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   Card,
   CardContent,
   CardHeader,
@@ -11,22 +12,37 @@ import {
 import { green, purple, red, yellow } from "@mui/material/colors";
 import { startCase } from "lodash";
 
-import { CharacterAttributes, StarshipAttributes } from "../../types";
+import { AttributesState, Resource } from "../../types";
 
 export interface PlayCardProps {
-  attributes: CharacterAttributes | StarshipAttributes;
-  imageUrl?: string;
+  resource: Resource;
   type: "character" | "starship";
+  side: "left" | "right";
+  attributesState: AttributesState;
 }
 
-const PlayCard = ({ attributes, imageUrl, type }: PlayCardProps) => {
-  const attribiutesList = Object.entries(attributes)
-    .filter(([key]) => key !== "name")
-    .map(([key, value]) => (
-      <ListItem>
-        <ListItemText>{`${startCase(key)}: ${value}`}</ListItemText>
+const PlayCard = ({ resource, type, side, attributesState }: PlayCardProps) => {
+  const { name, imageUrl, ...attributes } = resource;
+
+  const getAttributeColor = (attributeName: string) => {
+    if (attributesState[attributeName]) {
+      return attributesState[attributeName] === side ? green[700] : red[700];
+    }
+    return "inherit";
+  };
+
+  const attribiutesList = Object.entries(attributes).map(
+    ([attributeName, value]) => (
+      <ListItem key={attributeName}>
+        <ListItemText>
+          {`${startCase(attributeName)}: `}
+          <Box display="inline" color={getAttributeColor(attributeName)}>
+            {value}
+          </Box>
+        </ListItemText>
       </ListItem>
-    ));
+    )
+  );
 
   return (
     <Card
@@ -38,7 +54,7 @@ const PlayCard = ({ attributes, imageUrl, type }: PlayCardProps) => {
       }}
     >
       <CardHeader
-        title={attributes.name}
+        title={name}
         subheader={startCase(type)}
         avatar={
           <Avatar

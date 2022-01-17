@@ -1,5 +1,10 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { CharacterAttributes, StarshipAttributes } from "../../types";
+import {
+  Character,
+  CharacterAttributes,
+  Starship,
+  StarshipAttributes,
+} from "../../types";
 
 import PlayCard, { PlayCardProps } from "./PlayCard";
 
@@ -12,26 +17,39 @@ const Template: ComponentStory<typeof PlayCard> = (args: PlayCardProps) => (
   <PlayCard {...args} />
 );
 
-export const Character = Template.bind({});
-Character.args = {
+export const CharacterCard = Template.bind({});
+CharacterCard.args = {
   type: "character",
-  attributes: {
+  resource: {
     name: "Luke Skywalker",
     height: 172,
     mass: 77,
-    gender: "male",
-  } as CharacterAttributes,
-  imageUrl: "https://upload.wikimedia.org/wikipedia/en/9/9b/Luke_Skywalker.png",
+    iq: 200,
+    imageUrl:
+      "https://upload.wikimedia.org/wikipedia/en/9/9b/Luke_Skywalker.png",
+  } as Character,
+  side: "left",
+  attributesState: {
+    height: "left",
+    mass: "right",
+    iq: "left",
+  },
 };
 
-export const Starship = Template.bind({});
-Starship.args = {
+export const StarshipCard = Template.bind({});
+StarshipCard.args = {
   type: "starship",
-  attributes: {
+  resource: {
     name: "Death Star",
     length: 120000,
     cargoCapacity: 1000000000000,
     crew: 342953,
-  } as StarshipAttributes,
-  imageUrl: "https://upload.wikimedia.org/wikipedia/en/f/f9/Death_star1.png",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/en/f/f9/Death_star1.png",
+  } as Starship,
+  side: "right",
+  attributesState: {
+    length: "left",
+    cargoCapacity: "right",
+    crew: "left",
+  },
 };

@@ -15,6 +15,11 @@ export interface StarshipAttributes {
 }
 
 export interface Character extends CommonAttributes, CharacterAttributes {}
+
 export interface Starship extends CommonAttributes, StarshipAttributes {}
 
-export type Resource = "character" | "starship";
+export type ResourceType = "character" | "starship";
+
+export type Resource = Character | Starship;
+
+export type AttributesState = Record<string, "left" | "right">;
