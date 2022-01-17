@@ -1,6 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 
-import { Character, Resource, ResourceType, Starship } from "../types";
+import { Resource, ResourceType } from "../types";
 
 interface UseResourceOptions {
   limit: number;
@@ -10,7 +10,7 @@ interface ResourceResponse {
   resources: Resource[];
 }
 
-const RANDOM_SHIPS = gql`
+export const RANDOM_SHIPS = gql`
   query getRandomShips($limit: Int) {
     resources: pickRandomStarships(limit: $limit) {
       name
@@ -22,7 +22,7 @@ const RANDOM_SHIPS = gql`
   }
 `;
 
-const RANDOM_CHARACTERS = gql`
+export const RANDOM_CHARACTERS = gql`
   query getCharactersShips($limit: Int) {
     resources: pickRandomCharacters(limit: $limit) {
       name
