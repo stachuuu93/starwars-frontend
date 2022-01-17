@@ -1,15 +1,7 @@
-import {
-  Button,
-  CircularProgress,
-  Grid,
-  Select,
-  MenuItem,
-  Box,
-  SelectChangeEvent,
-} from "@mui/material";
-import { purple } from "@mui/material/colors";
+import { CircularProgress, Grid } from "@mui/material";
 
 import PlayCard from "../../components/PlayCard/PlayCard";
+import Controls from "../../components/Controls/Controls";
 import useResource from "../../hooks/useResource";
 import useGameState, { GameState } from "../../hooks/useGameState";
 import { ResourceType } from "../../types";
@@ -49,10 +41,10 @@ const Game = () => {
     dispatch({ type: "battle", leftResource, rightResource });
   };
 
-  const handleSelectResourceType = (event: SelectChangeEvent) => {
+  const handleSelectResourceType = (resourceType: ResourceType) => {
     dispatch({
       type: "changeResourceType",
-      resourceType: event.target.value as ResourceType,
+      resourceType,
     });
   };
 
@@ -66,29 +58,15 @@ const Game = () => {
           attributesState={gameState.attributesState}
         />
       </Grid>
-      <Grid
-        item
-        container
-        xs={1}
-        md={2}
-        bgcolor={purple[900]}
-        justifyContent="center"
-        p={2}
-      >
-        <Box display="block">{`${gameState.leftScore} : ${gameState.rightScore}`}</Box>
-        <Select
-          value={gameState.resourceType}
-          onChange={handleSelectResourceType}
-        >
-          <MenuItem value="character">Character</MenuItem>
-          <MenuItem value="starship">Starship</MenuItem>
-        </Select>
-        <Button variant="contained" onClick={handlePlayAgainClick}>
-          Pick random
-        </Button>
-        <Button variant="contained" onClick={handleBattleClick}>
-          Battle
-        </Button>
+      <Grid item xs={1} md={2}>
+        <Controls
+          leftScore={gameState.leftScore}
+          rightScore={gameState.rightScore}
+          resourceType={gameState.resourceType}
+          onBattleClick={handleBattleClick}
+          onPickNewCardsClick={handlePlayAgainClick}
+          onSelectResourceType={handleSelectResourceType}
+        />
       </Grid>
       <Grid item xs={5} md={3} lg={2}>
         <PlayCard
