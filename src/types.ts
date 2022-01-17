@@ -22,4 +22,4 @@ export type ResourceType = "character" | "starship";
 
 export type Resource = Character | Starship;
 
-export type AttributesState = Record<string, "left" | "right">;
+export type AttributesState = Record<string, "left" | "right" | "draw">;

@@ -32,8 +32,10 @@ const PlayCard = ({ resource, type, side, attributesState }: PlayCardProps) => {
   const { name, imageUrl, ...attributes } = resource;
 
   const getAttributeColor = (attributeName: string) => {
-    if (attributesState[attributeName]) {
-      return attributesState[attributeName] === side ? green[700] : red[700];
+    const attributeValue = attributesState[attributeName];
+
+    if (attributeValue && attributeValue !== "draw") {
+      return attributeValue === side ? green[700] : red[700];
     }
     return "inherit";
   };

@@ -27,6 +27,11 @@ const filterOutCommonAttributes = (resource: Resource) => {
   );
 };
 
+const compareAttributes = (leftValue: number, rightValue: number) => {
+  if (leftValue === rightValue) return "draw";
+  return leftValue > rightValue ? "left" : "right";
+};
+
 const useGameState = (initialState: GameState) => {
   return useReducer((state: GameState, action: Action): GameState => {
     switch (action.type) {
@@ -39,7 +44,7 @@ const useGameState = (initialState: GameState) => {
           draft.attributesState = Object.fromEntries(
             Object.keys(leftAttributes).map((key) => [
               key,
-              leftAttributes[key] > rightAttributes[key] ? "left" : "right",
+              compareAttributes(leftAttributes[key], rightAttributes[key]),
             ])
           );
 
@@ -49,6 +54,8 @@ const useGameState = (initialState: GameState) => {
           const rightPoints = Object.values(draft.attributesState).filter(
             (value) => value === "right"
           ).length;
+
+          if (leftPoints === rightPoints) return;
 
           if (leftPoints > rightPoints) {
             draft.leftScore += 1;
